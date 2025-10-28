@@ -6,6 +6,7 @@
  */
 
 #include "library.h"
+#include "debug.h"
 
 
 uint32_t int2string(int i, char* str){
