@@ -27,12 +27,17 @@ uint32_t bitfield(uint32_t bits[], uint32_t);
 #define len(array) (sizeof(array) / sizeof(*array)) // type agnostic
 
 extern void init(void);
+// TODO: Replace the assembly UART I/O functions with new ones.  Especially read_string to add backspace support.
 extern float string2float(char*);
 extern void float2string(float, char*, int); // in order to store data inside char* correctly, passing in the address to the character pointer is required so & char*
 extern void read_string(char*);
 extern char read_character(void);
 extern void output_string(char *);
 extern void output_character(char);
+
+// New types
+typedef uint32_t address;
+
 
 
 #endif /* LIBRARY_H_ */

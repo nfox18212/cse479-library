@@ -3,3 +3,4 @@ Debug/
 Release/
 Release/*
 .settings/org.eclipse.core.resources.prefs
+.~lock*

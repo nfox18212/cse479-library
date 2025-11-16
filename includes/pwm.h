@@ -1,7 +1,7 @@
 /*
- * library.h
+ * pwm.h
  *
- *  Created on: Sep 22, 2025
+ *  Created on: Nov 15, 2025
  *      Author: njfox4
  */
  
@@ -12,6 +12,13 @@
 #define PWM_H_
 
 #include <stdint.h>
+
+
+typedef struct pwm_options{
+
+
+
+} pwmopt;
 
 
 // An example of classes being rather useful

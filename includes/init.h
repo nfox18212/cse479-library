@@ -29,30 +29,6 @@ typedef enum gpio_ports{
 } gpio_port;
 
 
-typedef struct pwm_options{
-
-
-
-} pwmopt;
-
-
-
-typedef struct timer_options{
-    int width; // can only be 16, 32, or 64
-    int capture_mode; 
-    bool pwm;    // pwm definitions struct?
-    pwmopt pwm_options;
-    uint32_t load; // add error checking for if the user passes in a number that's too big for the given width
-
-
-
-} topt;
-
-    
-
-
-
-
 // void gpio_init(gpio_port port, int pins[8]);
 void gpio_interrupt_init();
 void init_udma(uint32_t* udma_ptr, uint32_t *source_ptr, uint32_t* dst_ptr);
