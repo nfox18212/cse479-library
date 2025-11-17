@@ -2,8 +2,8 @@
 #include "library.h"
 
 // internal functions
-static void Periodic_init(address t_addr, bool interrupt, int width, int direction, timer_options topt);
-static void oneShot_init(address t_addr, bool interrupt, int width, int direction, timer_options topt);
+// static void Periodic_init(address t_addr, bool interrupt, int width, int direction, timer_options topt);
+static void oneShot_Periodic_init(address t_addr, bool interrupt, int width, int direction, timer_options topt);
 static void RTC_init(address t_addr, bool interrupt, int width, int direction, timer_options topt);
 static void edge_count_init(address t_addr, bool interrupt, int width, int direction, timer_options topt);
 static void edge_time_init(address t_addr, bool interrupt, int width, int direction, timer_options topt);
@@ -80,10 +80,10 @@ int timer_cinit(timer_number timer_num, uint32_t load, int width, int direction,
 
   switch (mode) {
   case one_shot:
-    oneShot_init(timer_base, interrupt, width, direction, topt);
+    oneShot_Periodic_init(timer_base, interrupt, width, direction, topt);
     break;
   case periodic:
-    Periodic_init(timer_base, interrupt, width, direction, topt);
+    oneShot_Periodic_init(timer_base, interrupt, width, direction, topt);
     break;
 
   case RTC:
@@ -106,17 +106,20 @@ int timer_cinit(timer_number timer_num, uint32_t load, int width, int direction,
   return 0;
 }
 
-static void oneShot_init(address t_addr, bool interrupt, int width, int direction, timer_options topt){
+static void oneShot_Periodic_init(address t_addr, bool interrupt, int width, int direction, timer_options topt){
 
   // Start by disabling timer
   *uptradd(t_addr, 0x00C) = 0;
+  // clear config
+  *uptradd(t_addr, 0x000) = 0;
 
-}
+  if(topt.enable == true){
+    
+    if(width == 16 && (topt.timer_half == 'a' || topt.timer_half == 'b')){
+      
+    }
 
 
-
-static void Periodic_init(address t_addr, bool interrupt, int width, int direction, timer_options topt) {
-
-   
+  }
 
 }

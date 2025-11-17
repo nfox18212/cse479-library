@@ -18,6 +18,9 @@ typedef struct timer_options {
 
   bool enable;
 
+  // which half is being examined.  Valid options are a, b, or 0 if it is not being used
+  char timer_half;
+
   uint8_t prescaler;
   // need to do some thinking about what's the best way to expose different
   // options for all the myriad things that the general purpose timers can
@@ -25,6 +28,9 @@ typedef struct timer_options {
 
   bool pwm; // pwm definitions struct?
   pwmopt pwm_options;
+
+
+
 
   // udma options
 
