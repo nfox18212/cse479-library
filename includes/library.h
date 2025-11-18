@@ -26,6 +26,10 @@ uint32_t bitfield(uint32_t bits[], uint32_t);
 // get length of array
 #define len(array) (sizeof(array) / sizeof(*array)) // type agnostic
 
+
+void enable_interrupt(int number);
+
+
 extern void init(void);
 // TODO: Replace the assembly UART I/O functions with new ones.  Especially read_string to add backspace support.
 extern float string2float(char*);

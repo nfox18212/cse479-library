@@ -6,7 +6,7 @@
  */
 
 #include "library.h"
-// #include "debug.h"
+#include <math.h>
 
 uint32_t int2string(int i, char *str) {
   // this will write the int to the string and return the number of characters
@@ -85,3 +85,12 @@ float fexp(float base, uint32_t power) {
 
   return acc;
 }
+
+
+void enable_interrupt(int number){
+
+  address* int_enable_reg = (address *) 0xE000E100;
+  int_enable_reg += (uint32_t) floor(number/32.0);
+
+}
+

@@ -9,15 +9,16 @@
 // static void Periodic_init(address t_addr, bool interrupt, int width, int
 // direction, timer_options topt);
 static void oneShot_Periodic_init(address t_addr, bool interrupt, int width,
-                                  int direction, timer_options topt);
+                                  int direction, timer_mode mode,
+                                  timer_options topt);
 static void RTC_init(address t_addr, bool interrupt, int width, int direction,
-                     timer_options topt);
+                     timer_mode mode, timer_options topt);
 static void edge_count_init(address t_addr, bool interrupt, int width,
-                            int direction, timer_options topt);
+                            int direction, timer_mode mode, timer_options topt);
 static void edge_time_init(address t_addr, bool interrupt, int width,
-                           int direction, timer_options topt);
+                           int direction, timer_mode mode, timer_options topt);
 static void pwm_timer_init(address t_addr, bool interrupt, int width,
-                           int direction, timer_options topt);
+                           int direction, timer_mode mode, timer_options topt);
 
 // initializes ONE timer, if multiple timers should be configured this function
 // should be called multiple times.
@@ -26,20 +27,21 @@ int timer_cinit(timer_number timer_num, uint32_t load, int width, int direction,
                 bool interrupt, timer_mode mode, timer_options topt) {
 
   address timer_base = 0x0;                // default value
-  address* clock = (address *)0x400FE604;  // 16/32 bit clock
-  address* wclock = (address *)0x400FE654; // 32/64 bit clock
-  address* sys_interrupt = uptradd(0xE000E000, 0x100); // system intterupt control
-
-  // is this wise?  redundant?  should I just pass in mode again?
-  topt.__internal_mode = mode;
-
+  address *clock = (address *)0x400FE604;  // 16/32 bit clock
+  address *wclock = (address *)0x400FE654; // 32/64 bit clock
+  // Used to determine if we are enabling the interrupt on the b half or not
+  bool b_half = topt.timer_half == 'b';
+  int interrupt_number = 0;
+  
   // Unsure if this long-ass switch statement is a good way to implement this.
   // sets the base address and connects the clock depending on the inputted
-  // timer number.  Also if the interrupt bool is true, enables 
+  // timer number.  Also if the interrupt bool is true, enables
   switch (timer_num) {
   case timer_0:
     timer_base = 0x40030000;
     *clock |= (1 << 0); // keeps things consistent, will get optimized out
+    // this is super hacky, but more efficient.  if interrupt is true, it'll write a 1 to bit 19 unless b_half is also true.
+    // in that case, since TRUE is 1, it'll write to bit 20 since 19+1=20
     break;
   case timer_1:
     timer_base = 0x40031000;
@@ -96,23 +98,23 @@ int timer_cinit(timer_number timer_num, uint32_t load, int width, int direction,
   switch (mode) {
   case one_shot:
   case periodic:
-    oneShot_Periodic_init(timer_base, interrupt, width, direction, topt);
+    oneShot_Periodic_init(timer_base, interrupt, width, direction, mode, topt);
     break;
 
   case RTC:
-    RTC_init(timer_base, interrupt, width, direction, topt);
+    RTC_init(timer_base, interrupt, width, direction, mode, topt);
     break;
 
   case edge_count:
-    edge_count_init(timer_base, interrupt, width, direction, topt);
+    edge_count_init(timer_base, interrupt, width, direction, mode, topt);
     break;
 
   case edge_time:
-    edge_time_init(timer_base, interrupt, width, direction, topt);
+    edge_time_init(timer_base, interrupt, width, direction, mode, topt);
     break;
 
   case PWM:
-    pwm_timer_init(timer_base, interrupt, width, direction, topt);
+    pwm_timer_init(timer_base, interrupt, width, direction, mode, topt);
     break;
   }
 
@@ -120,7 +122,8 @@ int timer_cinit(timer_number timer_num, uint32_t load, int width, int direction,
 }
 
 static void oneShot_Periodic_init(address t_addr, bool interrupt, int width,
-                                  int direction, timer_options topt) {
+                                  int direction, timer_mode mode,
+                                  timer_options topt) {
 
   // Start by disabling timer
   *uptradd(t_addr, 0x00C) = 0;
@@ -150,7 +153,7 @@ static void oneShot_Periodic_init(address t_addr, bool interrupt, int width,
   // time-out mask by default
   if (interrupt && half == 'a') {
     *InterruptMaskReg = (1 << 0);
-    }
+  }
 
   if (interrupt && half == 'b') {
     *InterruptMaskReg = (1 << 8);
@@ -158,15 +161,16 @@ static void oneShot_Periodic_init(address t_addr, bool interrupt, int width,
 }
 
 static void RTC_init(address t_addr, bool interrupt, int width, int direction,
-                     timer_options topt) {}
-
+                     timer_mode mode, timer_options topt) {}
 
 static void edge_count_init(address t_addr, bool interrupt, int width,
-                            int direction, timer_options topt) {}
-                            
-                            
+                            int direction, timer_mode mode,
+                            timer_options topt) {}
+
 static void edge_time_init(address t_addr, bool interrupt, int width,
-                           int direction, timer_options topt) {}                            
+                           int direction, timer_mode mode, timer_options topt) {
+}
 
 static void pwm_timer_init(address t_addr, bool interrupt, int width,
-                           int direction, timer_options topt) {}                           
+                           int direction, timer_mode mode, timer_options topt) {
+}
