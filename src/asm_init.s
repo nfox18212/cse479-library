@@ -13,7 +13,7 @@
 init:
     push    {lr}
     ; bl      uart_init            ; initalize uart
-    bl        serial_init
+    bl      serial_init
     bl      gpio_init            ; init gpio
     bl      fpu_init
     bl      adc_init

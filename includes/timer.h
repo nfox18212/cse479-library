@@ -13,6 +13,37 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+typedef enum timer_number {
+
+  timer_0 = 0x1000,
+  timer_1,
+  timer_2,
+  timer_3,
+  timer_4,
+  timer_5,
+  wtimer_0 = 0x2000,
+  wtimer_1,
+  wtimer_2,
+  wtimer_3,
+  wtimer_4,
+  wtimer_5
+
+} timer_number;
+
+
+typedef enum timer_mode {
+  // wrapper for the different capture modes.  using non-default increments to
+  // avoid enum collision
+
+  one_shot = 0x10,
+  periodic = 0x20,
+  RTC = 0x30,
+  edge_count = 0x40,
+  edge_time = 0x50,
+  PWM = 0x60
+
+} timer_mode;
+
 typedef struct timer_options {
   // only include extra options, like options for connecting to pwm or UDMA
 
@@ -36,37 +67,8 @@ typedef struct timer_options {
 
   // ADC options
 
+  timer_mode __internal_mode;
 } timer_options;
-
-typedef enum timer_mode {
-  // wrapper for the different capture modes.  using non-default increments to
-  // avoid enum collision
-
-  one_shot = 0x10,
-  periodic = 0x20,
-  RTC = 0x30,
-  edge_count = 0x40,
-  edge_time = 0x50,
-  PWM = 0x60
-
-} timer_mode;
-
-typedef enum timer_number {
-
-  timer_0 = 0x1000,
-  timer_1,
-  timer_2,
-  timer_3,
-  timer_4,
-  timer_5,
-  wtimer_0 = 0x2000,
-  wtimer_1,
-  wtimer_2,
-  wtimer_3,
-  wtimer_4,
-  wtimer_5
-
-} timer_number;
 
 
 // initializes ONE timer, if multiple timers should be configured this function
