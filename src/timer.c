@@ -2,8 +2,8 @@
 #include "library.h"
 
 // Disable warning about pointers being 64 bit
-#pragma clang diagnostic ignored "-Wint-to-pointer-cast"
-#pragma clang diagnostic ignored "-Wpointer-to-int-cast"
+// #pragma clang diagnostic ignored "-Wint-to-pointer-cast"
+// #pragma clang diagnostic ignored "-Wpointer-to-int-cast"
 
 // internal functions
 // static void Periodic_init(address t_addr, bool interrupt, int width, int
@@ -23,7 +23,7 @@ static void pwm_timer_init(address t_addr, bool interrupt, int width,
 // initializes ONE timer, if multiple timers should be configured this function
 // should be called multiple times. 
 // TODO: Add Variadic Macro Usage
-int timer_cinit(timer_number timer_num, uint32_t load, int width, int direction,
+int _timer_init(timer_number timer_num, uint32_t load, int width, int direction,
                 bool interrupt, timer_mode mode, timer_options topt) {
 
   address timer_base = 0x0;                // default value

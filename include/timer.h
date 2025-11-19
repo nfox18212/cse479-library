@@ -10,8 +10,10 @@
 
 #include "pwm.h"
 #include "udma.h"
+// #include "debug.h"
 #include <stdbool.h>
 #include <stdint.h>
+
 
 typedef enum timer_number {
 
@@ -50,6 +52,7 @@ typedef struct timer_options {
   bool enable;
 
   // which half is being examined.  Valid options are a, b, or 0 if it is not being used
+  int width;
   char timer_half;
 
   uint8_t prescaler;
@@ -71,9 +74,17 @@ typedef struct timer_options {
 } timer_options;
 
 
+#define timer_init(t, load, width, dir, intt, mode, ...) \
+  _timer_init(t, load, width, dir, intt, mode, (timer_options){ \
+  .enable = TRUE, \
+    \
+  })
+
 // initializes ONE timer, if multiple timers should be configured this function
 // should be called multiple times.
-int timer_cinit(timer_number t, uint32_t load, int width, int direction,
+int _timer_init(timer_number t, uint32_t load, int direction, int width,
                  bool interrupt, timer_mode m, timer_options topt);
+
+int test_func(timer_number t, uint32_t load, timer_options topt);
 
 #endif

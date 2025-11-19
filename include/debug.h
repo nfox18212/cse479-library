@@ -86,3 +86,14 @@ struct frame {
 	uint32_t pc; // program counter
 	uint32_t xpsr; // execution program status register
 };
+
+#ifdef __clang__
+#define IGNORE_INITIALIZER_WARNING(...)                                       \
+    _Pragma("clang diagnostic push")                                          \
+    _Pragma("clang diagnostic ignored \"-Winitializer-overrides\"")           \
+    __VA_ARGS__                                                               \
+    _Pragma("clang diagnostic pop")
+
+#else
+#define IGNORE_INITIALIZER_WARNING(...) __VA_ARGS__                                                                
+#endif

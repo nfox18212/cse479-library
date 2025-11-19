@@ -1,2 +1,6 @@
 CompileFlags:
-  Add: [-I, ../includes, ../../includes]
+  Add: [-I, ../include, ../../include]
+Diagnostics:
+  UnusedIncludes: Strict
+  MissingIncludes: None
+  Suppress: [Wint-to-pointer-cast, Wpointer-to-int-cast]

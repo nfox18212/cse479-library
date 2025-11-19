@@ -5,7 +5,7 @@
     .text
     .global init
     .global kp_handler
-    .global timer_init
+    .global timer_ainit
     .global gpio_init
 	.global temp_set_ADCSSMUX3
 
@@ -130,7 +130,7 @@ fpu_init:
 
 
 
-timer_init:
+timer_ainit:
     push    {r4-r12, lr}
     ; connect clock to timer 0 and 1
     mov        r4, #0xe604

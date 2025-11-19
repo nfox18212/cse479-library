@@ -5,8 +5,8 @@
  *      Author: nfox
  */
 // Disable warning about pointers being 64 bit
-#pragma clang diagnostic ignored "-Wint-to-pointer-cast"
-#pragma clang diagnostic ignored "-Wpointer-to-int-cast"
+// #pragma clang diagnostic ignored "-Wint-to-pointer-cast"
+// #pragma clang diagnostic ignored "-Wpointer-to-int-cast"
 
 #include "init.h"
 #include "library.h"

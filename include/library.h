@@ -40,7 +40,7 @@ extern void output_string(char *);
 extern void output_character(char);
 
 // New types
-typedef uint32_t address;
+typedef volatile uint32_t address;
 
 
 
