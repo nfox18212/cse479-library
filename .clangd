@@ -3,4 +3,4 @@ CompileFlags:
 Diagnostics:
   UnusedIncludes: Strict
   MissingIncludes: None
-  Suppress: [Wint-to-pointer-cast, Wpointer-to-int-cast]
+  Suppress: [-Wint-to-pointer-cast, -Wpointer-to-int-cast]

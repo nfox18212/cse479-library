@@ -2,6 +2,7 @@
 #include <stdint.h>
 
 #define UNSET_U8 0xCA
+#define UNSET_U32 0xCACACACA
 
 typedef struct {
 
@@ -239,7 +240,7 @@ typedef struct {
 
 } GpioInitOpts;
 #define gpio_init(port, ...)                                                   \
-  IGNORE_INITIALIZER_WARNING(                                                  \
+   IGNORE_INITIALIZER_WARNING(                                                  \
       gpio_init_(port, (GpioInitOpts){                                         \
                            .pin_mask = UNSET_U8,                               \
                            .output = UNSET_U8,                                 \
