@@ -1,4 +1,4 @@
-    .cdecls "init.h"
+    .cdecls "../include/init.h"
 
     .data
 

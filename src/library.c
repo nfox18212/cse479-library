@@ -73,7 +73,7 @@ void write_LEDs(uint32_t num) {
 
 float fexp(float base, uint32_t power) {
 
-  float acc = base; // accumulator
+  float acc = base; // accumulator2
 
   if (power == 0) {
     return 1.0;
@@ -94,6 +94,6 @@ void enable_interrupt(int number){
   // if the interrupt number is bigger than 31, int_enable_reg will end up being bigger than 0,
   // which will offset the register by 4 * div bytes.  so 4 * 1, 4*2, etc
   int pin = number % 32;
-  *int_enable_reg |= (1 << number);
+  *int_enable_reg |= (1 << pin);
 }
 

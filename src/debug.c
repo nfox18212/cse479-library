@@ -348,7 +348,7 @@ char *addrtostring(uint32_t addr) {
     char numc;                     // num but character verison
     if (num < 10) {
       numc = 0x30 + num;  // the ascii versions of 0-9 is 0x30 + 0-9
-    } else if (10 <= num <= 15) {
+    } else if (10 <= num && num <= 15) {
       // here we need to use A-F, which will be 0x37 + num.  0xA + 0x37 = 0x41 for example
       numc = 0x37 + num;
     }

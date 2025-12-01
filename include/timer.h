@@ -33,7 +33,7 @@ typedef enum timer_number {
 } timer_number;
 
 
-typedef enum timer_mode {
+typedef enum {
   // wrapper for the different capture modes.  using non-default increments to
   // avoid enum collision
 
@@ -46,7 +46,7 @@ typedef enum timer_mode {
 
 } timer_mode;
 
-typedef struct timer_options {
+typedef struct {
   // only include extra options, like options for connecting to pwm or UDMA
 
   bool enable;
@@ -70,20 +70,18 @@ typedef struct timer_options {
 
   // ADC options
 
-  timer_mode __internal_mode;
 } timer_options;
 
 
-#define timer_init(t, load, width, dir, intt, mode, ...) \
-  _timer_init(t, load, width, dir, intt, mode, (timer_options){ \
-  .enable = TRUE, \
-    \
-  })
+//#define timer_init(t, load, width, dir, intt, mode, ...) \
+//  _timer_init(t, load, width, dir, intt, mode, (timer_options){ \
+//  .enable = TRUE, \
+//    \
+//  })
 
 // initializes ONE timer, if multiple timers should be configured this function
 // should be called multiple times.
-int _timer_init(timer_number t, uint32_t load, int direction, int width,
-                 bool interrupt, timer_mode m, timer_options topt);
+int _timer_init(timer_number, uint32_t, int, int, bool, timer_mode, timer_options);
 
 int test_func(timer_number t, uint32_t load, timer_options topt);
 

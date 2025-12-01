@@ -1,30 +1,28 @@
 #include "timer.h"
 #include "library.h"
+#include <stdbool.h>
 
 // Disable warning about pointers being 64 bit
 // #pragma clang diagnostic ignored "-Wint-to-pointer-cast"
 // #pragma clang diagnostic ignored "-Wpointer-to-int-cast"
 
 // internal functions
-// static void Periodic_init(address t_addr, bool interrupt, int width, int
+// static void Periodic_init(address t_addr, bool interruptToggle, int width, int
 // direction, timer_options topt);
-static void oneShot_Periodic_init(address t_addr, bool interrupt, int width,
-                                  int direction, timer_mode mode,
-                                  timer_options topt);
-static void RTC_init(address t_addr, bool interrupt, int width, int direction,
+static void oneShot_Periodic_init(address, bool interruptToggle, int, int, timer_mode, timer_options);
+static void RTC_init(address t_addr, bool interruptToggle, int width, int direction,
                      timer_mode mode, timer_options topt);
-static void edge_count_init(address t_addr, bool interrupt, int width,
+static void edge_count_init(address t_addr, bool interruptToggle, int width,
                             int direction, timer_mode mode, timer_options topt);
-static void edge_time_init(address t_addr, bool interrupt, int width,
+static void edge_time_init(address t_addr, bool interruptToggle, int width,
                            int direction, timer_mode mode, timer_options topt);
-static void pwm_timer_init(address t_addr, bool interrupt, int width,
+static void pwm_timer_init(address t_addr, bool interruptToggle, int width,
                            int direction, timer_mode mode, timer_options topt);
 
 // initializes ONE timer, if multiple timers should be configured this function
 // should be called multiple times. 
 // TODO: Add Variadic Macro Usage
-int _timer_init(timer_number timer_num, uint32_t load, int width, int direction,
-                bool interrupt, timer_mode mode, timer_options topt) {
+int _timer_init(timer_number timer_num, uint32_t load, int width, int direction, bool interruptToggle, timer_mode mode, timer_options topt) {
 
   address timer_base = 0x0;                // default value
   address *clock = (address *)0x400FE604;  // 16/32 bit clock
@@ -102,10 +100,9 @@ int _timer_init(timer_number timer_num, uint32_t load, int width, int direction,
     // invalid timer number, report and exit
     output_string("Invalid timer number passed in, stopping initialization");
     return -1;
-    break;
   }
 
-  if(interrupt){
+  if(interruptToggle){
     // mild abuse of booleans here.  in stdbool, TRUE is 1 and FALSE is 0, so adding a bool will increase the 
     // interrupt number by 1 if the user is accessing the b half
     enable_interrupt(interrupt_number + b_half);
@@ -114,30 +111,30 @@ int _timer_init(timer_number timer_num, uint32_t load, int width, int direction,
   switch (mode) {
   case one_shot:
   case periodic:
-    oneShot_Periodic_init(timer_base, interrupt, width, direction, mode, topt);
+    oneShot_Periodic_init(timer_base, interruptToggle, width, direction, mode, topt);
     break;
 
   case RTC:
-    RTC_init(timer_base, interrupt, width, direction, mode, topt);
+    RTC_init(timer_base, interruptToggle, width, direction, mode, topt);
     break;
 
   case edge_count:
-    edge_count_init(timer_base, interrupt, width, direction, mode, topt);
+    edge_count_init(timer_base, interruptToggle, width, direction, mode, topt);
     break;
 
   case edge_time:
-    edge_time_init(timer_base, interrupt, width, direction, mode, topt);
+    edge_time_init(timer_base, interruptToggle, width, direction, mode, topt);
     break;
 
   case PWM:
-    pwm_timer_init(timer_base, interrupt, width, direction, mode, topt);
+    pwm_timer_init(timer_base, interruptToggle, width, direction, mode, topt);
     break;
   }
 
   return 0;
 }
 
-static void oneShot_Periodic_init(address t_addr, bool interrupt, int width,
+static void oneShot_Periodic_init(address t_addr, bool interruptToggle, int width,
                                   int direction, timer_mode mode,
                                   timer_options topt) {
 
@@ -170,11 +167,11 @@ static void oneShot_Periodic_init(address t_addr, bool interrupt, int width,
   }
 
   // time-out mask by default
-  if (interrupt && half == 'a') {
+  if (interruptToggle && half == 'a') {
     *InterruptMaskReg = (1 << 0);
   }
 
-  if (interrupt && half == 'b') {
+  if (interruptToggle && half == 'b') {
     *InterruptMaskReg = (1 << 8);
   }
 
@@ -188,17 +185,17 @@ static void oneShot_Periodic_init(address t_addr, bool interrupt, int width,
   }
 }
 
-static void RTC_init(address t_addr, bool interrupt, int width, int direction,
+static void RTC_init(address t_addr, bool interruptToggle, int width, int direction,
                      timer_mode mode, timer_options topt) {}
 
-static void edge_count_init(address t_addr, bool interrupt, int width,
+static void edge_count_init(address t_addr, bool interruptToggle, int width,
                             int direction, timer_mode mode,
                             timer_options topt) {}
 
-static void edge_time_init(address t_addr, bool interrupt, int width,
+static void edge_time_init(address t_addr, bool interruptToggle, int width,
                            int direction, timer_mode mode, timer_options topt) {
 }
 
-static void pwm_timer_init(address t_addr, bool interrupt, int width,
+static void pwm_timer_init(address t_addr, bool interruptToggle, int width,
                            int direction, timer_mode mode, timer_options topt) {
 }
