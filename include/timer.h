@@ -61,7 +61,7 @@ typedef struct {
   // connect.  thinking something like a c version of classes.
 
   bool pwm; // pwm definitions struct?
-  pwmopt pwm_options;
+  pwmopt* pwm_options;
 
 
 
@@ -70,19 +70,36 @@ typedef struct {
 
   // ADC options
 
+  // timer_mode __internal_mode;
 } timer_options;
 
 
-//#define timer_init(t, load, width, dir, intt, mode, ...) \
-//  _timer_init(t, load, width, dir, intt, mode, (timer_options){ \
-//  .enable = TRUE, \
-//    \
-//  })
+// #define timer_init(t, load, width, dir, intt, mode, ...) \
+//   _timer_init(t, load, width, dir, intt, mode, (timer_options){ \
+//   .enable = TRUE, \
+//   .width = 32,  \
+//   .timer_half = 'a',\
+//   .prescaler = 0,\
+//   .pwm = FALSE,\
+//   .pwm_options =  NULL, \
+//   __VA_ARGS__ \
+// })
+
+#define test_func(t, load, ...)\
+  _test_func(t, load, (timer_options){\
+  .enable = TRUE,\
+  .width = 32,\
+  .timer_half = 'a',\
+  .prescaler = 0,\
+  .pwm = FALSE, \
+  .pwm_options = NULL, \
+  __VA_ARGS__})
+
 
 // initializes ONE timer, if multiple timers should be configured this function
 // should be called multiple times.
-int _timer_init(timer_number, uint32_t, int, int, bool, timer_mode, timer_options);
+int _timer_init(timer_number, uint64_t, int, int, bool, timer_mode, timer_options);
 
-int test_func(timer_number t, uint32_t load, timer_options topt);
+int _test_func(timer_number t, uint64_t load, timer_options topt);
 
 #endif
