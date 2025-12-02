@@ -30,7 +30,7 @@ uint32_t bitfield(uint32_t bits[], uint32_t);
 void enable_interrupt(int number);
 
 
-extern void init(void);
+// extern void init(void);
 // TODO: Replace the assembly UART I/O functions with new ones.  Especially read_string to add backspace support.
 extern float string2float(char*);
 extern void float2string(float, char*, int); // in order to store data inside char* correctly, passing in the address to the character pointer is required so & char*
