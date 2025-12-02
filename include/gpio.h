@@ -20,7 +20,7 @@ typedef enum {
     portF
 } gpio_port;
 
-void gpio_init(gpio_port, uint32_t, uint32_t, bool, bool);
+void gpio_init(gpio_port, uint32_t, bool, uint32_t, bool, bool);
 
 uint32_t gpio_read(gpio_port);
 

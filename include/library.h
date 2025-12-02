@@ -15,17 +15,22 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-uint32_t int2string(int, char*);
+// New types
+typedef volatile uint32_t address;
+typedef uint32_t bitfield;
 
-float fexp(float, uint32_t );
-
-uint32_t bitfield(uint32_t bits[], uint32_t);
-
+// Common Macros
 // properly offset a uint32_t pointer
 #define uptradd(ptr, offset) ((uint32_t *)(ptr + offset))
 // get length of array
 #define len(array) (sizeof(array) / sizeof(*array)) // type agnostic
 
+
+// Common Functions 
+bitfield make_bitfield(uint32_t bits[], uint32_t);
+uint32_t int2string(int, char*);
+
+float fexp(float, uint32_t );
 
 void enable_interrupt(int number);
 
@@ -39,8 +44,6 @@ extern char read_character(void);
 extern void output_string(char *);
 extern void output_character(char);
 
-// New types
-typedef volatile uint32_t address;
 
 
 

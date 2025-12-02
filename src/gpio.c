@@ -6,13 +6,13 @@
  */
 
 // main GPIO initialization function, only supports APB
-// TODO: Add support for GPIO AFSEL
 #include "gpio.h"
 #include "library.h"
 #include <stdio.h>
 
-void gpio_init(gpio_port port, uint32_t pin, uint32_t alternate_func_select, bool analogue_select, bool intteruptToggle){
+void gpio_init(gpio_port port, uint32_t pins, bool output, uint32_t alternate_func_select, bool analogue_select, bool interruptToggle){
 
+  // pins is a bit array, so u
   
   address *RCGC = (address *) 0x400FE608;
   address base;
@@ -48,6 +48,19 @@ void gpio_init(gpio_port port, uint32_t pin, uint32_t alternate_func_select, boo
       
   }
 
-  
+  // set direction of the pins on the gpio port
+  *uptradd(base, 0x400) |= output * pins;
+
+  if(alternate_func_select != 0){
+    // gpio afsel stuff
+    // TODO: Implement alternate function
+  }
+
+  if(analogue_select){
+    // TODO: Implement analogue 
+  } else {
+    // GPIO digital enable
+    *uptradd(base, 0x51C) = pins; 
+  }
 
 }
