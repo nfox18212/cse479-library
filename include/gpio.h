@@ -12,6 +12,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdarg.h>
 #include "library.h"
 
 typedef enum {
@@ -27,6 +28,7 @@ void _gpio_init(gpio_port port, uint32_t pins[], size_t pinnum, bool, uint32_t, 
 // hacky workaround to not require user to specifiy pinnum
 #define gpio_init(port, pin_array, output, alt_func_select, analogue_select, interruptToggle) _gpio_init(port, pin_array, len(pin_array), output, alt_func_select, analogue_select, interruptToggle)
 
-uint32_t gpio_read(gpio_port);
+uint8_t gpio_read(gpio_port, int32_t pin, ...);
+uint8_t gpio_write(gpio_port, uint8_t data);
 
 #endif /* INCLUDE_GPIO_H_ */

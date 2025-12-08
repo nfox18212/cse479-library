@@ -52,13 +52,12 @@ uint32_t int2string(int i, char *str) {
 }
 
 // Take in a variable list of integers and returns a number with bits shifted to that position.  The last bit must be -1.
-uint32_t make_bitfield(int32_t bits, ...) {
+bitfield make_bitfield(int32_t bits, ...) {
   
   uint32_t field = 1 << bits;
   va_list args;
   va_start(args, bits);
-  // i'm doing 31 because i can't think of a better way to do this
-  // duh just have the user put a -1 as the last argument
+  // -1 must be the last argument
   do{
     uint32_t f = va_arg(args, int32_t);
     if(f == -1){
