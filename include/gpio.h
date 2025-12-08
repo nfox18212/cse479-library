@@ -8,8 +8,11 @@
 #ifndef INCLUDE_GPIO_H_
 #define INCLUDE_GPIO_H_
 
+
+#include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include "library.h"
 
 typedef enum {
     portA,
@@ -20,7 +23,9 @@ typedef enum {
     portF
 } gpio_port;
 
-void gpio_init(gpio_port, uint32_t, bool, uint32_t, bool, bool);
+void _gpio_init(gpio_port port, uint32_t pins[], size_t pinnum, bool, uint32_t, bool, bool);
+// hacky workaround to not require user to specifiy pinnum
+#define gpio_init(port, pin_array, output, alt_func_select, analogue_select, interruptToggle) _gpio_init(port, pin_array, len(pin_array), output, alt_func_select, analogue_select, interruptToggle)
 
 uint32_t gpio_read(gpio_port);
 

@@ -13,6 +13,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <stddef.h>
 #include <stdbool.h>
 
 // New types
@@ -27,7 +28,8 @@ typedef uint32_t bitfield;
 
 
 // Common Functions 
-bitfield make_bitfield(uint32_t bits[], uint32_t);
+bitfield make_bitfield(int32_t bits, ...);
+bitfield _make_array_bitfield(uint32_t *bits, size_t num_bits);
 uint32_t int2string(int, char*);
 
 float fexp(float, uint32_t );

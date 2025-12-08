@@ -10,9 +10,11 @@
 #include "library.h"
 #include <stdio.h>
 
-void gpio_init(gpio_port port, uint32_t pins, bool output, uint32_t alternate_func_select, bool analogue_select, bool interruptToggle){
+void _gpio_init(gpio_port port, uint32_t pins[], size_t pinnum, bool output, uint32_t alternate_func_select, bool analogue_select, bool interruptToggle){
 
-  // pins is a bit array, so u
+  // Determining the size of an array inside a function is an unsolvable problem
+
+  bitfield pin_mask = _make_array_bitfield(pins, pinnum);
   
   address *RCGC = (address *) 0x400FE608;
   address base;
@@ -49,7 +51,7 @@ void gpio_init(gpio_port port, uint32_t pins, bool output, uint32_t alternate_fu
   }
 
   // set direction of the pins on the gpio port
-  *uptradd(base, 0x400) |= output * pins;
+  *uptradd(base, 0x400) |= output * pin_mask;
 
   if(alternate_func_select != 0){
     // gpio afsel stuff
@@ -60,7 +62,7 @@ void gpio_init(gpio_port port, uint32_t pins, bool output, uint32_t alternate_fu
     // TODO: Implement analogue 
   } else {
     // GPIO digital enable
-    *uptradd(base, 0x51C) = pins; 
+    *uptradd(base, 0x51C) = pin_mask; 
   }
 
 }

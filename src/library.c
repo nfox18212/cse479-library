@@ -7,6 +7,7 @@
 
 #include "library.h"
 #include <math.h>
+#include <stdarg.h>
 
 uint32_t int2string(int i, char *str) {
   // this will write the int to the string and return the number of characters
@@ -50,7 +51,25 @@ uint32_t int2string(int i, char *str) {
   return chars_written;
 }
 
-uint32_t bitfield(uint32_t *bits, uint32_t num_bits) {
+// Take in a variable list of integers and returns a number with bits shifted to that position.  The last bit must be -1.
+uint32_t make_bitfield(int32_t bits, ...) {
+  
+  uint32_t field = 1 << bits;
+  va_list args;
+  va_start(args, bits);
+  // i'm doing 31 because i can't think of a better way to do this
+  // duh just have the user put a -1 as the last argument
+  do{
+    uint32_t f = va_arg(args, int32_t);
+    if(f == -1){
+      va_end(args);
+      return field;
+    }
+    field += (1 << f);
+  } while(1);
+}
+
+bitfield _make_bitfield(uint32_t *bits, uint32_t num_bits) {
   // Takes an array of bit positions to turn into an unsigned integer bitfield
   uint32_t field = 0;
 
@@ -61,6 +80,7 @@ uint32_t bitfield(uint32_t *bits, uint32_t num_bits) {
 
   return field;
 }
+
 
 void write_LEDs(uint32_t num) {
   // Light up the designated LEDs in GPIO Port B.  Requires GPIO Port B to be

@@ -58,8 +58,7 @@ void pwm_init(){
 
     // try a different divisor, do 64 so write a 1 to bits 19, 18, 17. Also enable USEPWMDIV by writing 1 to bit 20
     // sets PWM DIV
-    uint32_t bf4[] = {19, 18, 17, 20};
-    mask = bitfield(bf4, len(bf4));
+    mask = make_bitfield(19, 18, 17, 20, -1);
     *((uint32_t *) (RCC + 0x060)) |=  mask;
 
     // Now configure the PWM generator to use Count down Mode with immediate parameter updates
@@ -73,11 +72,10 @@ void pwm_init(){
 
     /* 
     Set the action for when the counter value reaches zero, so
-    set bitfield 11:10 to 0x3 to drive it HIGH, so enable both bits
+    set make_bitfield 11:10 to 0x3 to drive it HIGH, so enable both bits
     Also set action for when counter value reaches the compare value by writing to bitfield 1:0, I'll have it invert so write 0x1 so write to 1
     */
-    uint32_t bf3[] = { 10, 1};
-    mask =  bitfield(bf3, len(bf3));
+    mask = make_bitfield(10, 11, -1);
     *uptradd(M1PWM, 0xE4) |= mask;
 
 
@@ -85,7 +83,7 @@ void pwm_init(){
     // uint32_t load = change_pwm_period(PWM12A, 4); // minimum frequency is approx 4 Hz
     // only need to do it for A to set period for both A and B
 
-       // WRITING LOAD VALUE WAY TOO SMALL
+    // WRITING LOAD VALUE WAY TOO SMALL
 
     // Set Duty Cycle for PWM2A
     // uint32_t cmpa = change_pwm_duty(PWM12A, 0.25);
@@ -100,7 +98,7 @@ void pwm_init(){
     // PWM Output Enable
     // Need to write a 1 to Pin 7, 6 and 5
     uint32_t bits[] = {5, 6, 7};
-    mask = bitfield(bits, len(bits));
+    mask = make_bitfield(5, 6, 7, -1);
     *((uint32_t *) (M1PWM + 0x008)) |= mask;
 
     // PWMENABLE also needs to be turned on
