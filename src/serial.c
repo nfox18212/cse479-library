@@ -1,4 +1,8 @@
 #include "serial.h"
+// #include "library.h"
+#include <stdarg.h>
+
+void write_string(const char*);
 
 // thank you dr. schindler for providing this code for initializing uart
 void serial_init(void) {
@@ -30,4 +34,34 @@ void serial_init(void) {
   (*((volatile uint32_t *)(0x40004420))) |= 0x03;
   /* Configure PA0 and PA1 for UART  */
   (*((volatile uint32_t *)(0x4000452C))) |= 0x11;
+}
+
+void uprintf(const char* str, ...){
+
+  volatile char* uartp = (char *) 0x4000C000;
+  va_list format;
+
+  va_start(format, str);
+
+  char buf[MAX_STR];
+  int ret = vsprintf(buf, str, format);
+
+  if(ret != -1){
+    write_string(buf);
+  }
+  
+  va_end(format);
+}
+
+void write_string(const char* buf){
+  char *uart = (char *) 0x4000C000;
+  
+  char* backup_str = (char *) buf;
+  char c = *backup_str;
+  
+  while(c != '\0'){
+    *uart = c;
+    backup_str++;
+    c = *backup_str;
+  }
 }

@@ -107,12 +107,14 @@ uint8_t gpio_read(gpio_port p, int32_t pin, ...){
   do {
     int8_t currentPin = va_arg(pins, uint32_t);
     if(currentPin == -1){
+      va_end(pins);
       break;
     }
 
     if(currentPin >= 8){
       fprintf(stderr, "Attempt to access reserved pin %i!  Returning 0",currentPin);
       // return garbage data
+      va_end(pins);
       return 255;
 
     }
