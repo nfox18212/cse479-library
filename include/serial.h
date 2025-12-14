@@ -11,7 +11,6 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <stdio.h>
-// #include "/home/nfox/ti/ccs1281/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include/stdio.h"
 
 #define MAX_STR 512
 void serial_init(void);

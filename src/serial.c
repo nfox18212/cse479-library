@@ -1,4 +1,5 @@
 #include "serial.h"
+#include "library.h"
 // #include "library.h"
 #include <stdarg.h>
 
@@ -22,12 +23,6 @@ void serial_init(void) {
   (*((volatile uint32_t *)(0x4000C02C))) = 0x60;
   /* Enable UART0 Control  */
   (*((volatile uint32_t *)(0x4000C030))) = 0x301;
-  /*************************************************/
-  /* The OR operation sets the bits that are OR'ed */
-  /* with a 1.  To translate the following lines   */
-  /* to assembly, load the data, OR the data with  */
-  /* the mask and store the result back.           */
-  /*************************************************/
   /* Make PA0 and PA1 as Digital Ports  */
   (*((volatile uint32_t *)(0x4000451C))) |= 0x03;
   /* Change PA0,PA1 to Use an Alternate Function  */
@@ -44,8 +39,10 @@ void uprintf(const char* str, ...){
   va_start(format, str);
 
   char buf[MAX_STR];
+  // vsprintf is the internal stdio function that takes in the va_list
   int ret = vsprintf(buf, str, format);
 
+  // no error code recevied
   if(ret != -1){
     write_string(buf);
   }
@@ -55,13 +52,16 @@ void uprintf(const char* str, ...){
 
 void write_string(const char* buf){
   char *uart = (char *) 0x4000C000;
-  
+  uint32_t *uart_fr = uptradd(uart, 0x18);
+
   char* backup_str = (char *) buf;
   char c = *backup_str;
   
   while(c != '\0'){
+    
     *uart = c;
     backup_str++;
     c = *backup_str;
   }
 }
+
