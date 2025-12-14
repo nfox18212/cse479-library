@@ -33,7 +33,6 @@ void serial_init(void) {
 
 void uprintf(const char* str, ...){
 
-  volatile char* uartp = (char *) 0x4000C000;
   va_list format;
 
   va_start(format, str);
@@ -53,15 +52,20 @@ void uprintf(const char* str, ...){
 void write_string(const char* buf){
   char *uart = (char *) 0x4000C000;
   uint32_t *uart_fr = uptradd(uart, 0x18);
+  
 
   char* backup_str = (char *) buf;
   char c = *backup_str;
   
   while(c != '\0'){
+    if(*uart_fr != (1 <<6 )){
+    // check for UART Recieve buffer full.  if it is, don't move the string pointer and loop
+      *uart = c;
+      backup_str++;
+      c = *backup_str;
+    }
     
-    *uart = c;
-    backup_str++;
-    c = *backup_str;
+
   }
 }
 

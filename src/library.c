@@ -59,7 +59,7 @@ bitfield make_bitfield(int32_t bits, ...) {
   va_start(args, bits);
   // -1 must be the last argument
   do{
-    uint32_t f = va_arg(args, int32_t);
+    int32_t f = va_arg(args, int32_t);
     if(f == -1){
       va_end(args);
       return field;

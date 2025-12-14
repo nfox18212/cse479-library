@@ -24,7 +24,8 @@ typedef enum {
     portF
 } gpio_port;
 
-void _gpio_init(gpio_port port, uint32_t pins[], size_t pinnum, bool, uint32_t, bool, bool);
+void _gpio_init(gpio_port port, uint32_t* pins, size_t pinnum, bool output, uint32_t alternate_func_select, bool analogue_select, bool interrupt);
+
 // hacky workaround to not require user to specifiy pinnum
 #define gpio_init(port, pin_array, output, alt_func_select, analogue_select, interruptToggle) _gpio_init(port, pin_array, len(pin_array), output, alt_func_select, analogue_select, interruptToggle)
 

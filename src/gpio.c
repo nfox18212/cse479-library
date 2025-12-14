@@ -36,7 +36,7 @@ address base;
       break;
     default:
       fprintf(stderr, "Attempt to use GPIO port that does not exist\n");
-      return -1;
+      return 0xFFFFFFFF;
       
   }
 
@@ -47,7 +47,7 @@ void _gpio_init(gpio_port port, uint32_t pins[], size_t pinnum, bool output, uin
 
   // Determining the size of an array inside a function is an unsolvable problem
 
-  bitfield pin_mask = _make_array_bitfield(pins, pinnum);
+  bitfield pin_mask = _make_bitfield(pins, pinnum);
   
   address *RCGC = (address *) 0x400FE608;
   address base = portToAddr(port);
@@ -85,7 +85,8 @@ void _gpio_init(gpio_port port, uint32_t pins[], size_t pinnum, bool output, uin
     // TODO: Implement alternate function
   }
 
-  if(analogue_select){      *RCGC |= (1 << 5);
+  if(analogue_select){
+      *RCGC |= (1 << 5);
     // TODO: Implement analogue 
   } else {
     // GPIO digital enable

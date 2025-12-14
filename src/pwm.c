@@ -97,7 +97,7 @@ void pwm_init(){
 
     // PWM Output Enable
     // Need to write a 1 to Pin 7, 6 and 5
-    uint32_t bits[] = {5, 6, 7};
+//    uint32_t bits[] = {5, 6, 7};
     mask = make_bitfield(5, 6, 7, -1);
     *((uint32_t *) (M1PWM + 0x008)) |= mask;
 
