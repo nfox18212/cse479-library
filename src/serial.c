@@ -3,6 +3,7 @@
 // #include "library.h"
 #include <stdarg.h>
 #include <stdlib.h>
+#include "linenoise/linenoise.h"
 
 void write_string(const char*);
 
@@ -69,5 +70,24 @@ void write_string(const char* buf){
     
 
   }
+}
+
+
+void read_string(char * str){
+
+    char* backup_str = (char *) str;
+    char fed_char;
+    char *uart = (char *) 0x4000C018;
+    do{
+        fed_char = *backup_str++; // move pointer after each character
+//        if(fed_char)
+
+
+
+        // check for enter key
+    } while(fed_char != 0x20);
+
+
+
 }
 

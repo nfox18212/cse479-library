@@ -19,7 +19,7 @@ void serial_init(void);
 void uprintf(const char* str, ...);
 // printf to uart 
 
-char* read_ustring(void);
+void read_ustring(char * str);
 // TODO: Add backspace support
 
 #endif /* INCLUDE_SERIAL_H_ */
