@@ -68,7 +68,7 @@ bitfield make_bitfield(int32_t bits, ...) {
   } while(1);
 }
 
-bitfield _make_bitfield(uint32_t *bits, uint32_t num_bits) {
+bitfield _make_bitfield(uint32_t *bits, size_t num_bits) {
   // Takes an array of bit positions to turn into an unsigned integer bitfield
   uint32_t field = 0;
 
