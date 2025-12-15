@@ -14,7 +14,7 @@
 
 
 //void ctimer_init(int); // int will be period
-void serial_init();
+
 void uart_iterrupt_init();
 
 void pwm_init();
