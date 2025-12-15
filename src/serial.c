@@ -2,6 +2,7 @@
 #include "library.h"
 // #include "library.h"
 #include <stdarg.h>
+#include <stdlib.h>
 
 void write_string(const char*);
 
@@ -37,7 +38,7 @@ void uprintf(const char* str, ...){
 
   va_start(arg, str);
 
-  char buf[MAX_STR];
+  char *buf = calloc(MAX_STR, 1);
   // vsprintf is the internal stdio function that takes in the va_list
   int ret = vsprintf(buf, str, arg);
 
@@ -46,6 +47,7 @@ void uprintf(const char* str, ...){
     write_string(buf);
   }
   
+  free(buf);
   va_end(format);
 }
 

@@ -37,10 +37,6 @@ void ssi_init();
 
 void adc_init();
 
-// implemented in assembly
-extern void gpio_init(void);
-extern void timer_init(void);
-
 
 
 #endif /* INIT_H_ */
