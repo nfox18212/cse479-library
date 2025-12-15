@@ -33,15 +33,15 @@ void serial_init(void) {
 
 void uprintf(const char* str, ...){
 
-  va_list format;
+  va_list arg;
 
-  va_start(format, str);
+  va_start(arg, str);
 
   char buf[MAX_STR];
   // vsprintf is the internal stdio function that takes in the va_list
-  int ret = vsprintf(buf, str, format);
+  int ret = vsprintf(buf, str, arg);
 
-  // no error code recevied
+  // no error code received
   if(ret != -1){
     write_string(buf);
   }
@@ -59,7 +59,7 @@ void write_string(const char* buf){
   
   while(c != '\0'){
     if(*uart_fr != (1 <<6 )){
-    // check for UART Recieve buffer full.  if it is, don't move the string pointer and loop
+    // check for UART Receive buffer full.  if it is, don't move the string pointer and loop
       *uart = c;
       backup_str++;
       c = *backup_str;

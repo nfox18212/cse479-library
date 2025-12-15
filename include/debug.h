@@ -65,7 +65,6 @@ void ufsrprint(uint32_t ufsr);
 void handlefault(void);
 void customfault(uint32_t baddr);
 void normalfault(void);
-void serial_init(void);
 
 // assembly routines to get didcrashp and baddrp
 extern uint32_t getbaddr(void);

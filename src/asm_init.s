@@ -6,7 +6,7 @@
     .global init
     .global kp_handler
     .global timer_ainit
-    .global gpio_init
+    ;.global gpio_init
 	.global temp_set_ADCSSMUX3
 
 

@@ -95,12 +95,13 @@ void _gpio_init(gpio_port port, uint32_t pins[], size_t pinnum, bool output, uin
 
 }
 
-uint8_t gpio_read(gpio_port p, int32_t pin, ...){
+uint32_t gpio_read(gpio_port p, int32_t pin, ...){
 
   //  reads pins from the specified gpio_port, the last pin needs to be -1.  pin numbers greater than 8 will return an error
   
   address base = portToAddr(p);
-  uint32_t gpio_data = * (address *) base;
+  // See comment in gpio_write
+  uint32_t gpio_data = *uptradd(base, 0x3FC);
   uint8_t ret = gpio_data & (1 << pin); 
   va_list pins;
   va_start(pins, pin);
@@ -126,10 +127,15 @@ uint8_t gpio_read(gpio_port p, int32_t pin, ...){
   return ret;
 }
 
-uint8_t gpio_write(gpio_port p, uint8_t data){
+uint32_t gpio_write(gpio_port p, uint32_t data){
   // Write data to the specified port and returns the data written
   address base = portToAddr(p);
-  *uptradd(base, 0) = data;
+  /*  Changed offset from 0 to 0x3FC.  GPIO_PortB_GPIO_DATA was found in the memory browser
+   *  at 0x400053FC instead of 0x40005000 which the tiva documentation said it would be.  Why????
+   *  So either way, currently moving the offset to 0x3FC to try to get this to work.
+   */
+  *uptradd(base, 0x3FC) &= 0; // clear
+  *uptradd(base, 0x3FC) |= data;
 
   // return the data written to the gpio port
   return *uptradd(base, 0);
